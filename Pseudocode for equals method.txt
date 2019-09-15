@@ -1,0 +1,20 @@
+equals(Object other):
+  if this == other
+    return true
+  else if other is not an instance of MyList
+    return false
+  if other's size != this's size
+    return false
+  else
+    get an iterator to this
+    get an iterator to other
+    if corresponding elements are not equal*
+      return false
+  return true
+
+*Note that lists are allowed to have null elements.
+Your code should not throw a NullPointException in that case.
+Deal with this issue like you did in the contains, indexOf,
+and lastIndexOf methods.
+I.e., you will need to use the == operator to compare references to null,
+but use the equals method to compare actual objects to each other.
