@@ -93,11 +93,24 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         return false;
     }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// START: get(int index) finished, but not tested ////////////////////////////////
     @Override
     public E get(int index) {
         // TODO Auto-generated method stub
-        return null;
+        if(index < 0 || index > size){
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException in method: " +
+                    "\npublic E get(int index){...} method \nAcceptable values: 0 - " + size +
+                    "\nPassed in value: " + index);
+        } else{
+            return getNode(index).element;
+        }
     }
+//////////////////////////////////////// END: get(int index) finished, but not tested /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// START: indexOf finished, but not tested /////////////////////////////////////
     @Override
     public int indexOf(E e) {
@@ -107,12 +120,13 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
             throw new NullPointerException("You passed a null value into the indexOf method");
         }
 
-        int i = 0;
+        int i = 0, index = -1;
 
         for(Node<E> current = head.next; current != head; current = current.next) {
             E thisElement = current.element;
 
             if(e.equals(thisElement)) {
+                index = i;
                 return i;
             }
             else {
@@ -120,10 +134,17 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
             }
         }
 
-        return -1;
+        if(index == -1){
+            throw new NoSuchElementException();
+        }
+
+        return index;
     }
 /////////////////////////////////////////// END: indexOf finished, but not tested /////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// START: lastIndexOf finished, but not tested ///////////////////////////////////
     @Override
     public int lastIndexOf(E e) {
@@ -148,9 +169,10 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         return lastFoundIndex;
     }
 ////////////////////////////////////////// END: lastIndexOf finished, but not tested //////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// START: equals() finished, but not tested /////////////////////////////////////
     @Override
     public boolean equals(Object obj) {
@@ -163,6 +185,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         } else {
             Iterator iterThis = this.iterator();
             Iterator iterOther = ((MyList) obj).iterator();
+            int counter = 0;
 
             while(iterThis.hasNext()) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,14 +200,27 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                if(!(iterThis.next().equals(iterOther.next()))) {
+
+
+                if(getNode(counter) == null) {
+                    if(((MyDoublyLinkedList)obj).getNode(counter) != null) {
+                        return false;
+                    }
+                } else if(getNode(counter) != null) {
+                    if(((MyDoublyLinkedList)obj).getNode(counter) == null) {
+                        return false;
+                    }
+                } else if(!(iterThis.next().equals(iterOther.next()))) {
                     return false;
                 }
+                counter++;
             }
             return true;
         }
     }
 /////////////////////////////////////////// END: equals() finished, but not tested ////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     @Override
     @SuppressWarnings("unchecked")
@@ -203,7 +239,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
             }
 
             if(head != null){
-                throw new RuntimeException(a);
+                throw new CloneNotSupportedException();
 
                 // return clonedList;
             }
@@ -217,27 +253,40 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     }
 
 
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// START: remove(int index) finished, but not tested /////////////////////////////
     @Override
     public E remove(int index) {
         // TODO Auto-generated method stub
 
         if(index < 0 || index >= size){
             throw new IndexOutOfBoundsException("You cannot remove an Element that does not exist");
-        } else{
-
         }
+        else{
+            Node<E> newNode = getNode(index);
+            E returnVal = newNode.element;
+            newNode.next.previous = newNode.previous;
+            newNode.previous.next = newNode.next;
+            size--;
 
-        return null;
+            return returnVal;
+        }
     }
+//////////////////////////////////////// END: remove(int index) finished, but not tested //////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 /*****************************************************************************************************************************/
 /*****************************************************************************************************************************/
 /*****************************************************************************************************************************/
@@ -249,10 +298,8 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
 /*****************************************************************************************************************************/
 
 
-
-
-
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// START: set(int index, E e) finished, but not tested ///////////////////////
     @Override
     public Object set(int index, E e) throws IndexOutOfBoundsException {
         // TODO Auto-generated method stub
@@ -272,36 +319,64 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
 
         return this;
     }
+///////////////////////////////////////////// END: set(int index, E e) finished, but not tested ///////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////// START: getFirst() finished, but not tested /////////////////////////////////
     @Override
     public E getFirst() {
         // TODO Auto-generated method stub
-        return head.next.element;
+        return getNode(0).element;
     }
+//////////////////////////////////////////// END: getFirst() finished, but not tested /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////// START: getLast() finished, but not tested /////////////////////////////
     @Override
     public E getLast() {
         // TODO Auto-generated method stub
-        return head.previous.element;
+        return getNode(size - 1).element;
     }
+//////////////////////////////////////////////// END: getLast() finished, but not tested //////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// START: addFirst(E e) finished, but not tested /////////////////////////////
     @Override
     public void addFirst(E e) {
         add(0, e);
     }
+///////////////////////////////////////////// END: addFirst(E e) finished, but not tested /////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// START: addLast(E e) finished, but not tested /////////////////////////////
     @Override
     public void addLast(E e) {
         // TODO Auto-generated method stub
         add(size - 1, e);
     }
+////////////////////////////////////////////// END: addLast(E e) finished, but not tested /////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// START: removeFirst() finished, but not tested /////////////////////////////
     @Override
     public E removeFirst() {
         // TODO Auto-generated method stub
         return remove(0);
     }
+//////////////////////////////////////////// END: removeFirst() finished, but not tested //////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    
     @Override
     public E removeLast() {
         // TODO Auto-generated method stub
@@ -346,7 +421,8 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         @Override
         public boolean hasPrevious() {
             // TODO Auto-generated method stub
-            return (nextIndex > -size);
+            // return (nextIndex > -size);
+            return nextIndex > 0;
         }
 
         @Override
