@@ -321,7 +321,7 @@ public class TestMyDoublyLinkedList {
         System.out.println("Test 26 successful");
 
 
-        /*
+
         System.out.println("Testing clone method:");
         @SuppressWarnings("unchecked")
         MyAbstractSequentialList<String> theClone = (MyDoublyLinkedList<String>)(list.clone());
@@ -339,7 +339,6 @@ public class TestMyDoublyLinkedList {
             System.out.println("Test 29 successful");
         else
             throw new RuntimeException();
-
         list.clear();
         // []
         if (list.isEmpty() && list.size() == 0)
@@ -347,7 +346,6 @@ public class TestMyDoublyLinkedList {
         else
             throw new RuntimeException();
 
-        */
 
         System.out.println("Testing equals method:");
         MyAbstractSequentialList<Integer> intList1 = new MyDoublyLinkedList<>();
