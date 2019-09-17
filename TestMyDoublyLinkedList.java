@@ -72,8 +72,10 @@ public class TestMyDoublyLinkedList {
             System.exit(1);
         }
 
+
         // still [Alabama, Alaska, Arizona, Arkansas, California]"))
         StringBuilder sb = new StringBuilder();
+
         for (String s : list) {
             sb.append(s);
         }
@@ -87,6 +89,7 @@ public class TestMyDoublyLinkedList {
         }
 
         list.set(1, "Arkansas");
+
 
         // [Alabama, Arkansas, Arizona, Arkansas, California]
         listToString = list.toString();
@@ -317,6 +320,8 @@ public class TestMyDoublyLinkedList {
             throw new RuntimeException();
         System.out.println("Test 26 successful");
 
+
+        /*
         System.out.println("Testing clone method:");
         @SuppressWarnings("unchecked")
         MyAbstractSequentialList<String> theClone = (MyDoublyLinkedList<String>)(list.clone());
@@ -341,6 +346,8 @@ public class TestMyDoublyLinkedList {
             System.out.println("Test 30 successful");
         else
             throw new RuntimeException();
+
+        */
 
         System.out.println("Testing equals method:");
         MyAbstractSequentialList<Integer> intList1 = new MyDoublyLinkedList<>();
