@@ -212,7 +212,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     }
 /////////////////////////////////////////// END: equals() finished, but not tested ////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
+
     @Override
     @SuppressWarnings("unchecked")
     protected Object clone() throws CloneNotSupportedException {
@@ -241,11 +241,11 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
 
         return clonedList;
     }
-*/
 
 
 
 
+/*
     @Override
     // @SuppressWarnings("unchecked")
     protected MyDoublyLinkedList<E> clone() throws CloneNotSupportedException {
@@ -272,7 +272,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         return clonedList;
             // return super.clone();
     }
-
+*/
 
 /*                                READY FOR GRADING: public E remove(int index) {...}                                */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
