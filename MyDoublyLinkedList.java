@@ -102,7 +102,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     @Override
     public E get(int index) {
         // TODO Auto-generated method stub
-        if(index < 0 || index > size){
+        if(index < 0 || index >= size){
             throw new IndexOutOfBoundsException("IndexOutOfBoundsException in method: " +
                     "\npublic E get(int index){...} method \nAcceptable values: 0 - " + size +
                     "\nPassed in value: " + index);
@@ -114,6 +114,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+    /*                                  READY FOR GRADING: public int lastIndexOf(E e)                                   */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// START: indexOf finished, but not tested /////////////////////////////////////
     @Override
@@ -177,67 +178,99 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// START: equals() finished, but not tested /////////////////////////////////////
     @Override
+    @SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
         if(this == obj) {
             return true;
-        } else if(!(obj instanceof MyList)) {
+        } else if(!(obj instanceof MyDoublyLinkedList)) { // instanceOf MyList
             return false;
-        } else if(((MyList) obj).size() != this.size()) {
+        } else if(((MyDoublyLinkedList) obj).size() != this.size()) {
             return false;
         } else {
-            Iterator iterThis = this.iterator();
-            Iterator iterOther = ((MyList) obj).iterator();
+            ListIterator<E> iterThis = this.listIterator(0);
+            ListIterator<E> iterOther = ((MyDoublyLinkedList<E>)obj).listIterator(0);
+
             int counter = 0;
 
             while(iterThis.hasNext()) {
-                if(getNode(counter) == null) {
-                    if(((MyDoublyLinkedList)obj).getNode(counter) != null) {
-                        return false;
-                    }
-                } else if(getNode(counter) != null) {
-                    if(((MyDoublyLinkedList)obj).getNode(counter) == null) {
-                        return false;
-                    }
-                } else if(!(iterThis.next().equals(iterOther.next()))) {
+                E elementThis = iterThis.next();
+                E elementOther = iterOther.next();
+
+                if(elementThis == null && elementOther != null){
+                    return false;
+                } else if(elementThis != null && elementOther == null){
+                    return false;
+                } else if(elementThis != null && elementThis.equals(elementOther)){
                     return false;
                 }
+
                 counter++;
+
             }
             return true;
         }
     }
 /////////////////////////////////////////// END: equals() finished, but not tested ////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+    @Override
+    @SuppressWarnings("unchecked")
+    protected Object clone() throws CloneNotSupportedException {
+        MyDoublyLinkedList<E> clonedList = null;
+        try{
+            clonedList = (MyDoublyLinkedList<E>)super.clone();
+            Node<E> clonedHead = new Node<>(null);
+            clonedList.head = clonedHead;
+            clonedHead.next = clonedHead;
+            clonedHead.previous = clonedHead;
+            int clonedSize = 0;
+            Node<E> currentClonedNode = new Node<>(null);
+
+            for (Node<E> current = head.next; current != head; current = current.next) {
+                currentClonedNode = getNode(clonedSize);
+                clonedList.add(clonedSize, currentClonedNode.element);
+                // currentClonedNode.next = currentClonedNode.previous.next;
+                // currentClonedNode.previous.next = currentClonedNode;
+                // currentClonedNode.next.previous = currentClonedNode;
+                clonedSize++;
+            }
+
+        } catch(CloneNotSupportedException exc){
+            System.out.println(exc);
+        }
+
+        return clonedList;
+    }
+*/
+
+
 
 
     @Override
-    @SuppressWarnings("unchecked")
+    // @SuppressWarnings("unchecked")
     protected MyDoublyLinkedList<E> clone() throws CloneNotSupportedException {
+
         MyDoublyLinkedList<E> clonedList;
-        try{
+        // MyDoublyLinkedList<E> clonedList = (MyDoublyLinkedList<E>)super.clone();
+
+        // try{
             // MyDoublyLinkedList<E> clonedList = (MyDoublyLinkedList<E>)super.clone();
             // Node<E> clonedHead = new Node<>(null);
             // clonedHead.next = clonedHead;
             // clonedHead.previous = clonedHead;
             clonedList = new MyDoublyLinkedList<>();
 
-
             for(Node<E> current = head.next; current != head; current = current.next){
                 clonedList.add(current.element);
             }
 
-            if(head != null){
-                throw new CloneNotSupportedException();
-
-                // return clonedList;
-            }
-        }
-        catch(CloneNotSupportedException exc){
-            throw new RuntimeException();
-        }
+            // }
+        // catch(CloneNotSupportedException exc){
+            // throw new RuntimeException();
+        // }
 
         return clonedList;
-        // return super.clone();
+            // return super.clone();
     }
 
 
@@ -271,9 +304,6 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         // TODO Auto-generated method stub
         if(index < 0 || index >= size){
             throw new IndexOutOfBoundsException();
-        }
-
-        for(Node<E> current = head.next; current != head; current = current.next){
         }
 
         Node<E> current = head.next;
@@ -380,7 +410,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         @Override
         public void add(E arg0) {
             // TODO Auto-generated method stub
-
+            iterState =ITERATOR_STATE.CANNOT_REMOVE;
         }
 
 /*                                  READY FOR GRADING: public boolean hasNext() {...}                                */
@@ -416,12 +446,15 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
             return returnVal;
         }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////// START: nextIndex() finished, but not tested /////////////////////////////////////////////////
         @Override
         public int nextIndex() {
             // TODO Auto-generated method stub
-            return 0;
+            return nextIndex;
         }
-
+//////////////////////////////////////////// END: nextIndex() finished, but not tested ////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -430,7 +463,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         @Override
         public E previous() {
             // TODO Auto-generated method stub
-            if(nextIndex <= -size){
+            if(nextIndex < 0){
                 throw new NoSuchElementException();
             }
             E returnVal = current.element;
@@ -443,23 +476,31 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////// START: previousIndex() finished, but not tested /////////////////////////////////////////////
         @Override
         public int previousIndex() {
             // TODO Auto-generated method stub
-            return 0;
+            return (nextIndex - 1);
         }
+/////////////////////////////////////////// END: previousIndex() finished, but not tested /////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         @Override
         public void remove() {
             switch (iterState) {
                 case CANNOT_REMOVE:
                     // ...
-                    break;
+                    throw new IllegalStateException();
                 case CAN_REMOVE_PREV:
                     // ...
+                    MyDoublyLinkedList.this.remove(nextIndex-1);
+                    iterState =ITERATOR_STATE.CANNOT_REMOVE;
                     break;
                 case CAN_REMOVE_CURRENT:
                     // ...
+                    MyDoublyLinkedList.this.remove(nextIndex);
+                    iterState =ITERATOR_STATE.CANNOT_REMOVE;
                     break;
             }
 
