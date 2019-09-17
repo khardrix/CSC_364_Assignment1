@@ -236,7 +236,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
             }
 
         } catch(CloneNotSupportedException exc){
-            System.out.println(exc);
+            throw new RuntimeException();
         }
 
         return clonedList;
@@ -280,7 +280,10 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     @Override
     public E remove(int index) {
         // TODO Auto-generated method stub
-        if(index < 0 || index >= size){
+        if(size == 0){
+            throw new NoSuchElementException();
+        }
+        else if(index < 0 || index > size){
             throw new IndexOutOfBoundsException("You cannot remove an Element that does not exist");
         }
         else{
@@ -356,7 +359,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     @Override
     public void addLast(E e) {
         // TODO Auto-generated method stub
-        add(size - 1, e);
+        add(size, e);
     }
 ////////////////////////////////////////////// END: addLast(E e) finished, but not tested /////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
