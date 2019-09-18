@@ -468,7 +468,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
             if(nextIndex <= 0){
                 throw new NoSuchElementException();
             }
-            E returnVal = current.element;
+            E returnVal = current.previous.element;
             current = current.previous;
             nextIndex--;
             iterState = ITERATOR_STATE.CAN_REMOVE_CURRENT;
