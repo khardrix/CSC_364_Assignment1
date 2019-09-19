@@ -412,6 +412,8 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         @Override
         public void add(E arg0) {
             // TODO Auto-generated method stub
+            MyDoublyLinkedList.this.add(nextIndex, arg0);
+            nextIndex++;
             iterState =ITERATOR_STATE.CANNOT_REMOVE;
         }
 
@@ -465,7 +467,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         @Override
         public E previous() {
             // TODO Auto-generated method stub
-            if(nextIndex <= 0){
+            if(!hasPrevious()){
                 throw new NoSuchElementException();
             }
             E returnVal = current.previous.element;
@@ -496,6 +498,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
                     throw new IllegalStateException();
                 case CAN_REMOVE_PREV:
                     // ...
+                    current = current.next;
                     MyDoublyLinkedList.this.remove(nextIndex-1);
                     iterState =ITERATOR_STATE.CANNOT_REMOVE;
                     break;
@@ -513,7 +516,20 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
         @Override
         public void set(E arg0) {
             // TODO Auto-generated method stub
-            current.element = arg0;
+            switch (iterState) {
+                case CANNOT_REMOVE:
+                    // ...
+                    throw new IllegalStateException();
+                case CAN_REMOVE_PREV:
+                    // ...
+                    current.previous.element = arg0;
+                    break;
+                case CAN_REMOVE_CURRENT:
+                    // ...
+                    current.element = arg0;
+                    break;
+            }
+
         }
 /////////////////////////////////////////////// END: set(E arg0) started, but not finished ////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
