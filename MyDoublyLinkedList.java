@@ -121,16 +121,19 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
     public int indexOf(E e) {
         // TODO Auto-generated method stub
         // Note: Make sure that you check the equality with == for null  objects and with the equals() for others
-        if(e == null) {
-            throw new NullPointerException("You passed a null value into the indexOf method");
-        } else {
+        int i = 0;
 
-            int i = 0;
+        for (Node<E> current = head.next; current != head; current = current.next) {
+            E thisElement = current.element;
 
-            for (Node<E> current = head.next; current != head; current = current.next) {
-                E thisElement = current.element;
-
-                if (e.equals(thisElement)) {
+            if(e == null){
+                if(thisElement == null){
+                    return i;
+                } else{
+                    i++;
+                }
+            }
+            else if (e.equals(thisElement)) {
                     return i;
                 }
                 else {
@@ -140,7 +143,7 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
 
             throw new NoSuchElementException("The element passed into: \npublic int indexOf(E e) {...} " +
                     "\ndoes not exist in the Circular Doubly LinkedList");
-        }
+
     }
 /////////////////////////////////////////// END: indexOf finished, but not tested /////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,12 +202,13 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
             while(iterThis.hasNext()) {
                 E elementThis = iterThis.next();
                 E elementOther = iterOther.next();
+                System.out.println("elementThis = " + elementThis + ", elementOther = " + elementOther + "\n");
 
-                if(elementThis == null && elementOther != null){
+                if(elementThis != null && !elementThis.equals(elementOther)) {
                     return false;
                 } else if(elementThis != null && elementOther == null){
                     return false;
-                } else if(elementThis != null && elementThis.equals(elementOther)){
+                } else if(elementThis != null && elementThis.equals(elementOther) && !elementThis.equals(elementOther)) {
                     return false;
                 }
 
@@ -500,6 +504,9 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
                     // ...
                     current = current.next;
                     MyDoublyLinkedList.this.remove(nextIndex-1);
+                    if(nextIndex >= size){
+                        nextIndex--;
+                    }
                     iterState =ITERATOR_STATE.CANNOT_REMOVE;
                     break;
                 case CAN_REMOVE_CURRENT:
