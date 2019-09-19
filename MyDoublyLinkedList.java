@@ -202,11 +202,10 @@ public class MyDoublyLinkedList<E> extends MyAbstractSequentialList<E> implement
             while(iterThis.hasNext()) {
                 E elementThis = iterThis.next();
                 E elementOther = iterOther.next();
-                System.out.println("elementThis = " + elementThis + ", elementOther = " + elementOther + "\n");
 
                 if(elementThis != null && !elementThis.equals(elementOther)) {
                     return false;
-                } else if(elementThis != null && elementOther == null){
+                } else if(elementThis == null && elementOther != null){
                     return false;
                 } else if(elementThis != null && elementThis.equals(elementOther) && !elementThis.equals(elementOther)) {
                     return false;
